@@ -1,0 +1,43 @@
+package com.goblin.app;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class HomeActivity extends AppCompatActivity {
+
+    private ImageView eye;
+    private TextView moneyBalance;
+    private boolean isMoneyBalanceVisible = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        eye = findViewById(R.id.eye);
+        moneyBalance = findViewById(R.id.moneybalance);
+
+        eye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleMoneyBalanceVisibility();
+            }
+        });
+    }
+
+    private void toggleMoneyBalanceVisibility() {
+        isMoneyBalanceVisible = !isMoneyBalanceVisible;
+
+        if (isMoneyBalanceVisible) {
+            moneyBalance.setVisibility(View.VISIBLE);
+            eye.setImageResource(R.drawable.open_eye);
+        } else {
+            moneyBalance.setVisibility(View.INVISIBLE); // You might want to use GONE if you want to completely remove the view from layout
+            eye.setImageResource(R.drawable.closed_eye);
+        }
+    }
+}
