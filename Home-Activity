@@ -1,5 +1,8 @@
 package com.goblin.app;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,20 +16,24 @@ public class HomeActivity extends AppCompatActivity {
     private TextView moneyBalance;
     private boolean isMoneyBalanceVisible = true;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         eye = findViewById(R.id.eye);
+        // Add ImageView for person
+        ImageView personImage = findViewById(R.id.imageView3); // Initialize personImage
+        // Add ImageView for news
+        ImageView newsImage = findViewById(R.id.imageView10);     // Initialize newsImage
         moneyBalance = findViewById(R.id.moneybalance);
 
-        eye.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleMoneyBalanceVisibility();
-            }
-        });
+        eye.setOnClickListener(v -> toggleMoneyBalanceVisibility());
+
+        // Set click listeners for the person and news images
+        personImage.setOnClickListener(v -> goToSettingsActivity());
+        newsImage.setOnClickListener(v -> openNewsLink());
     }
 
     private void toggleMoneyBalanceVisibility() {
@@ -36,8 +43,25 @@ public class HomeActivity extends AppCompatActivity {
             moneyBalance.setVisibility(View.VISIBLE);
             eye.setImageResource(R.drawable.open_eye);
         } else {
-            moneyBalance.setVisibility(View.INVISIBLE); // You might want to use GONE if you want to completely remove the view from layout
+            moneyBalance.setVisibility(View.INVISIBLE);
             eye.setImageResource(R.drawable.closed_eye);
         }
+    }
+
+    // Method to navigate to the Settings activity
+    private void goToSettingsActivity() {
+        Intent intent = new Intent(this, activity_settings.class); // Replace SettingsActivity with your actual activity class
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        // Start the activity
+        startActivity(intent);
+        // Finish the current activity
+        finish();
+    }
+
+    // Method to open the news link
+    private void openNewsLink() {
+        Uri newsUri = Uri.parse("https://www.indiegameatlas.com/post/money-saving-tips-for-gamers");
+        Intent intent = new Intent(Intent.ACTION_VIEW, newsUri);
+        startActivity(intent);
     }
 }
